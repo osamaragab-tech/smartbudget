@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+  /* Row background + colors */
+  .row-income { background-color: #e6ffea; }   /* فاتح أخضر */
+  .row-expense { background-color: #ffe5e5; }  /* فاتح أحمر */
+  .amt-income { color: #198754; font-weight: 600; }
+  .amt-expense { color: #dc3545; font-weight: 600; }
+  .badge-type { font-size: 0.8rem; }
+
+  /* Buttons Row */
+  .filter-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+  }
+</style>
+
+<div class="container mt-4">
+  <h3 class="fw-bold text-primary mb-3">Welcome, {{ user.username }} 👋</h3>
+
+  <!-- Stats Cards -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card text-center border-success shadow-sm">
+        <div class="card-body">
+          <h5 class="text-success">Income</h5>
+          <h4>${{ income|floatformat:2 }}</h4>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center border-danger shadow-sm">
+        <div class="card-body">
+          <h5 class="text-danger">Expenses</h5>
+          <h4>${{ expenses|floatformat:2 }}</h4>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-center border-primary shadow-sm">
+        <div class="card-body">
+          <h5 class="text-primary">Balance</h5>
+          <h4>${{ balance|floatformat:2 }}</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Form -->
+  <form method="get" class="card p-3 mb-4 shadow-sm bg-light">
+    <div class="row g-2">
+      <div class="col-md-3">
+        <label class="form-label">From</label>
+        <input type="date" name="from_date" value="{{ filters.from_date }}" class="form-control">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">To</label>
+        <input type="date" name="to_date" value="{{ filters.to_date }}" class="form-control">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Category</label>
+        <select name="category" class="form-select">
+          <option value="">All</option>
+          {% for c in categories %}
+            <option value="{{ c.id }}" {% if filters.category == c.id|stringformat:"s" %}selected{% endif %}>{{ c.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Type</label>
+        <select name="type" class="form-select">
+          <option value="">All</option>
+          <option value="income" {% if filters.type == 'income' %}selected{% endif %}>Income</option>
+          <option value="expense" {% if filters.type == 'expense' %}selected{% endif %}>Expense</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Filter + Reset Buttons -->
+    <div class="filter-buttons">
+      <button type="submit" class="btn btn-primary px-4">Filter</button>
+      <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary px-4">Reset</a>
+    </div>
+  </form>
+
+  <!-- Transactions Table -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold">Transactions</h5>
+        <a href="{% url 'add_transaction' %}" class="btn btn-success">+ Add Transaction</a>
+      </div>
+
+      <table class="table table-hover align-middle">
+        <thead class="table-primary">
+          <tr>
+            <th>Title</th>
+            <th class="text-end">Amount ($)</th>
+            <th>Category</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in transactions %}
+          <tr class="{% if t.amount < 0 %}row-expense{% else %}row-income{% endif %}">
+            <td class="fw-semibold">{{ t.title }}</td>
+
+            {% if t.amount < 0 %}
+              <td class="text-end amt-expense">${{ t.amount|floatformat:2 }}</td>
+            {% else %}
+              <td class="text-end amt-income">${{ t.amount|floatformat:2 }}</td>
+            {% endif %}
+
+            <td>{{ t.category.name }}</td>
+            <td>{{ t.date|date:"Y-m-d H:i" }}</td>
+            <td>
+              {% if t.amount < 0 %}
+                <span class="badge bg-danger badge-type">Expense</span>
+              {% else %}
+                <span class="badge bg-success badge-type">Income</span>
+              {% endif %}
+            </td>
+            <td>
+              <a href="{% url 'edit_transaction' t.id %}" class="btn btn-sm btn-outline-warning">Edit</a>
+              <a href="{% url 'delete_transaction' t.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="6" class="text-center text-muted">No transactions found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Summary -->
+      {% if transactions %}
+      <div class="mt-3 text-end">
+        <small class="text-muted">
+          Showing <strong>{{ transactions|length }}</strong> transactions.  
+          Filtered total: <strong>${{ total_filtered|floatformat:2 }}</strong>
+        </small>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
