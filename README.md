@@ -6,11 +6,13 @@ It helps users easily **track income, expenses**, and view **balance summaries**
 ---
 
 ## 🚀 Features
-- 📊 **Dashboard Overview** — view income, expenses, and balance in real time.
-- 🧾 **Transaction Management** — add, edit, delete, and search transactions easily.
-- 📂 **Categories** — organize transactions by category.
-- 🔍 **Search & Filter** — search by title or category.
-- 💾 **Persistent Data** — all data stored in a local SQLite database (or any Django-supported DB).
+
+- 📊 **Dashboard Overview** — view income, expenses, and balance in real time.  
+- 🧾 **Transaction Management** — add, edit, delete, and search transactions easily.  
+- 📂 **Categories** — organize transactions by category.  
+- 🔍 **Search & Filter** — search by title, category, or date range.  
+- 💾 **Persistent Data** — stored locally in SQLite (or any Django-supported database).  
+- 🔐 **User Authentication** — login required for personalized tracking.
 
 ---
 
@@ -18,17 +20,18 @@ It helps users easily **track income, expenses**, and view **balance summaries**
 
 | Component | Technology |
 |------------|-------------|
-| Backend | Django 5 |
-| Frontend | HTML, CSS, JavaScript |
-| Database | SQLite (default) |
-| Styling | Bootstrap (used in templates) |
-| Version Control | Git + GitHub |
+| **Backend** | Django 5 |
+| **Frontend** | HTML, CSS, JavaScript |
+| **Database** | SQLite |
+| **Styling** | Bootstrap |
+| **Version Control** | Git + GitHub |
 
 ---
 
-## ⚙️ Setup Instructions
+## 📦 Requirements
 
-### 1️⃣ Clone the repository
+All required dependencies are listed in the [`requirements.txt`](requirements.txt) file.  
+To install them, use:
+
 ```bash
-git clone https://github.com/osamaragab-tech/smartbudget.git
-cd smartbudget
+pip install -r requirements.txt
