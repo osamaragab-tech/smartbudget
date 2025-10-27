@@ -36,3 +36,6 @@ Thumbs.db
 # === Migrations Cache ===
 */migrations/__pycache__/
 */migrations/*.py[cod]
+
+__pycache__/
+*.pyc
