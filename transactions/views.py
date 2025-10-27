@@ -5,13 +5,18 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from .models import Transaction, Category
 from django.shortcuts import get_object_or_404
+from datetime import datetime
+
+
+
+
 
 @login_required
 def dashboard(request):
     user = request.user
     transactions = Transaction.objects.filter(user=user).select_related('category')
 
-    # ======================
+     # ======================
     # Filtering logic
     # ======================
     from_date = request.GET.get('from_date')
@@ -20,9 +25,19 @@ def dashboard(request):
     type_filter = request.GET.get('type')
 
     if from_date:
-        transactions = transactions.filter(date__date__gte=parsedate(from_date))
+        try:
+            from_date_parsed = datetime.strptime(from_date, "%Y-%m-%d").date()
+            transactions = transactions.filter(date__date__gte=from_date_parsed)
+        except ValueError:
+            pass  # تجاهل التاريخ لو فيه مشكلة في الفورمات
+
     if to_date:
-        transactions = transactions.filter(date__date__lte=parsedate(to_date))
+        try:
+            to_date_parsed = datetime.strptime(to_date, "%Y-%m-%d").date()
+            transactions = transactions.filter(date__date__lte=to_date_parsed)
+        except ValueError:
+            pass
+
     if category_id and category_id != "":
         transactions = transactions.filter(category__id=category_id)
     if type_filter in ['income', 'expense']:
