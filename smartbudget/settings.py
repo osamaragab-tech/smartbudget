@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-xt0z2q!j!jezqd!&*5s-z0w6*q3lolnl!%tz&6m392)m_+8dqm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['osamaomar.pythonanywhere.com']
 
 
 # Application definition
@@ -117,8 +117,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-STATIC_URL = 'static/'
+import os
+STATIC_URL = 'static/smartbudget/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [ BASE_DIR / 'static' ]
 
 # Default primary key field type
@@ -131,3 +132,5 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 
+MEDIA_URL = '/media/smartbudget/'     # عدّل حسب المشروع
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
