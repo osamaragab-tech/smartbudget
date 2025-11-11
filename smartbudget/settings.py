@@ -1,12 +1,15 @@
 from pathlib import Path
 import os
 
+# مسار المشروع الأساسي
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# أمان
 SECRET_KEY = 'django-insecure-xt0z2q!j!jezqd!&*5s-z0w6*q3lolnl!%tz&6m392)m_+8dqm'
 DEBUG = False
-ALLOWED_HOSTS = ['osamaomar.pythonanywhere.com']
+ALLOWED_HOSTS = ['osamaomar.pythonanywhere.com']  # غيره حسب اسم حسابك
 
+# التطبيقات المثبتة
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -18,6 +21,7 @@ INSTALLED_APPS = [
     'transactions',
 ]
 
+# Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -30,6 +34,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'smartbudget.urls'
 
+# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -45,8 +50,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'smartbudget.wsgi.application'
 
-DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3','NAME': BASE_DIR / 'db.sqlite3'}}
+# قاعدة البيانات
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
+# Validators لكلمات المرور
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
@@ -54,20 +66,24 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
+# الإعدادات الدولية
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Cairo'  # اضبط حسب منطقتك
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = '/smartbudget/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [BASE_DIR / 'static']
+# Static files
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Django يجمع هنا ملفات static
+STATICFILES_DIRS = [BASE_DIR / 'static']  # ملفات المشروع الأصلية
 
-MEDIA_URL = '/smartbudget/media/'
+# Media files
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Redirects تسجيل الدخول
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
